@@ -1,23 +1,17 @@
 import Foundation
 
 func solution(_ survey:[String], _ choices:[Int]) -> String {
+    var types: [String: Int] = [:]
     
-    var answer: [Character: Int] = ["R":0,"T":0,"C":0,"F":0,"J":0,"M":0,"A":0,"N":0]
-
-    (0..<survey.count).forEach {
-        let type: [Character] = Array(survey[$0])
-        
-        if choices[$0] > 4 {
-            answer[type[1]]! += abs(choices[$0] - 4)
-        } else if choices[$0] < 4 {
-            answer[type[0]]! += abs(choices[$0] - 4)
-        }
+    for (index,choice) in choices.enumerated() {
+        let key = String(survey[index].prefix(1))
+        types[key] = types[key, default: 0] + (4 - choice)
     }
-
-    let RT = answer["R"]! >= answer["T"]! ? "R" : "T"
-    let CF = answer["C"]! >= answer["F"]! ? "C" : "F"
-    let JM = answer["J"]! >= answer["M"]! ? "J" : "M"
-    let AN = answer["A"]! >= answer["N"]! ? "A" : "N"
-
-    return RT + CF + JM + AN
+    
+    let RT = types["R", default: 0] >= types["T", default: 0] ? "R" : "T"
+    let CF = types["C", default: 0] >= types["F", default: 0] ? "C" : "F"
+    let JM = types["J", default: 0] >= types["M", default: 0] ? "J" : "M"
+    let AN = types["A", default: 0] >= types["N", default: 0] ? "A" : "N"
+    
+    return RT+CF+JM+AN
 }
