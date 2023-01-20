@@ -1,5 +1,5 @@
 import Foundation
 
 func solution(_ dot:[Int]) -> Int {
-    return dot[0] < 0 ? (dot[1] < 0 ? 3 : 2) : (dot[1] < 0 ? 4 : 1)
+    return dot.first! > 0 ? (dot.last! > 0 ? 1 : 4) : (dot.last! > 0 ? 2 : 3)
 }
