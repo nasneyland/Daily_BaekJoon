@@ -1,5 +1,5 @@
 import Foundation
 
 func solution(_ n:Int) -> Int {
-    return (1...n).filter{ (6 * $0) % n == 0 }[0]
+    return (1...n).filter {($0 * 6) % n == 0}.min()!
 }
