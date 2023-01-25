@@ -1,11 +1,13 @@
 import Foundation
 
 func solution(_ s:String) -> Int {
-    var strArray = s.split(separator: " ")
-    while strArray.contains("Z") {
-        let zIndex = strArray.firstIndex(of: "Z")!
-        strArray.remove(at: zIndex)
-        strArray.remove(at: strArray.index(before: zIndex))
+    var stack: [Int] = []
+    s.split(separator: " ").forEach {
+        if String($0) == "Z" {
+            stack.removeLast()
+        } else {
+            stack.append(Int($0)!)
+        }
     }
-    return strArray.map{Int($0)!}.reduce(0,+)
+    return stack.reduce(0,+)
 }
