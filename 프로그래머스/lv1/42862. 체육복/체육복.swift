@@ -1,17 +1,19 @@
 import Foundation
 
 func solution(_ n: Int, _ lost: [Int], _ reserve: [Int]) -> Int {
-    let newReserve = reserve.filter { !lost.contains($0) }
-    let newLost = lost.filter { !reserve.contains($0) }
-
-    var lostPeople: Int = newLost.count
-
-    newReserve.forEach {
-        let isLend: Bool = newLost.contains($0 - 1) || newLost.contains($0 + 1)
-        if isLend && lostPeople > 0 {
-            lostPeople -= 1
+    var array = Array(repeating: 1, count: n)
+    lost.forEach { array[$0-1] -= 1 }
+    reserve.forEach { array[$0-1] += 1 }
+    (0...n-1).forEach { 
+        if $0 != 0 && array[$0] == 0 && array[$0-1] == 2 {
+            // 앞사람 확인
+            array[$0] = 1
+            array[$0-1] = 1
+        } else if $0 != (n-1) && array[$0] == 0 && array[$0+1] == 2 {
+            // 뒷사람 확인
+            array[$0] = 1
+            array[$0+1] = 1
         }
     }
-
-    return n - lostPeople
+    return array.filter{$0>0}.count
 }
