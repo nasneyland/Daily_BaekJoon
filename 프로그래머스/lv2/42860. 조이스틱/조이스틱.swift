@@ -19,8 +19,7 @@ func solution(_ name:String) -> Int {
         let moveFront = startIdx * 2 + (name.count - endIdx)
         let moveBack = (name.count - endIdx) * 2 + startIdx
 
-        leftright = min(leftright, moveFront)
-        leftright = min(leftright, moveBack)
+        leftright = min(leftright, moveFront, moveBack)
     }
 
     return updown + leftright
