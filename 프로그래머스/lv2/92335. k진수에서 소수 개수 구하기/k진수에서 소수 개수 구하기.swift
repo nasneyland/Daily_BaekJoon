@@ -1,18 +1,11 @@
 import Foundation
 
 func solution(_ n:Int, _ k:Int) -> Int {
-
-    func isPrime(_ num: Int) -> Bool {
-        if(num<4) {
+    return String(n, radix: k).split(separator: "0").filter { number in
+        let num = Int(number)!
+        if num < 4 {
             return num == 1 || num == 0 ? false : true
         }
-        for i in 2...Int(sqrt(Double(num))) {
-            if (num % i == 0) { return false }
-        }
-        return true
-    }
-    
-    return String(n, radix: k).split(separator: "0").filter {
-        return isPrime(Int($0)!)
+        return (2...Int(sqrt(Double(num)))).filter { num % $0 == 0 }.count == 0
     }.count
 }
