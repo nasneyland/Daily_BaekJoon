@@ -32,6 +32,6 @@ func solution(_ fees:[Int], _ records:[String]) -> [Int] {
      }
     
     return carDic.sorted{$0.0 < $1.0}.map { onoff in
-         return timeFee(onoff.1.map {timeInterval($0[0], $0.count == 1 ? "23:59" : $0[1])}.reduce(0, +))
+         return timeFee(onoff.1.reduce(0) {$0 + timeInterval($1[0], $1.count == 1 ? "23:59" : $1[1])})
      }
 }
