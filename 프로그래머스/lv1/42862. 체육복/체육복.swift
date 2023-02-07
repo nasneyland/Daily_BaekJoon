@@ -1,19 +1,23 @@
 import Foundation
 
 func solution(_ n: Int, _ lost: [Int], _ reserve: [Int]) -> Int {
-    var array = Array(repeating: 1, count: n)
-    lost.forEach { array[$0-1] -= 1 }
-    reserve.forEach { array[$0-1] += 1 }
-    (0...n-1).forEach { 
-        if $0 != 0 && array[$0] == 0 && array[$0-1] == 2 {
-            // 앞사람 확인
-            array[$0] = 1
-            array[$0-1] = 1
-        } else if $0 != (n-1) && array[$0] == 0 && array[$0+1] == 2 {
-            // 뒷사람 확인
-            array[$0] = 1
-            array[$0+1] = 1
+    var studentList = Array(repeating: 1, count: n)
+    
+    lost.forEach {studentList[$0 - 1] -= 1}
+    reserve.forEach {studentList[$0 - 1] += 1}
+    
+    studentList.enumerated().forEach { (index, student) in
+        if index != 0, student == 0, studentList[index - 1] == 2 {
+            studentList[index - 1] -= 1
+            studentList[index] += 1
+            return
+        }
+        if index != studentList.count - 1, student == 0, studentList[index + 1] == 2 {
+            studentList[index + 1] -= 1
+            studentList[index] += 1
+            return
         }
     }
-    return array.filter{$0>0}.count
+    
+    return studentList.filter {$0 >= 1}.count
 }
