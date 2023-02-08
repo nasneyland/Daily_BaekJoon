@@ -1,26 +1,40 @@
 import Foundation
 
 func solution(_ name:String) -> Int {
-    let name = Array(name)
-    let aValue = Int(Character("A").asciiValue!)
-    let zValue = Int(Character("Z").asciiValue!)
-
+    let zValue = Character("Z").asciiValue!
+    let aValue = Character("A").asciiValue!
+    
     var updown = 0
-    var leftright = name.count-1
-
-    for startIdx in 0..<name.count {
-        updown += min(Int(name[startIdx].asciiValue!) - aValue, zValue - Int(name[startIdx].asciiValue!) + 1)
-
-        var endIdx = startIdx + 1
-        while endIdx < name.count && name[endIdx] == "A" {
-            endIdx += 1
-        }
-
-        let moveFront = startIdx * 2 + (name.count - endIdx)
-        let moveBack = (name.count - endIdx) * 2 + startIdx
-
-        leftright = min(leftright, moveFront, moveBack)
+    var leftright = name.count - 1
+    
+    var nameList = name.map {String($0)}
+    var startIdx = 0
+    var endIdx = 0
+    
+    name.forEach { 
+        let nameValue = $0.asciiValue!
+        updown += min(Int(zValue - nameValue + 1), Int(nameValue - aValue))
     }
-
+    
+    while startIdx < nameList.count {
+        if nameList[startIdx] == "A" {
+            endIdx = startIdx
+            while endIdx < nameList.count - 1, nameList[endIdx + 1] == "A" {
+                endIdx += 1
+            }
+            
+            if startIdx <= 1 && endIdx == name.count - 1 {
+                leftright = 0
+            } else {
+                let turnLeft = (startIdx <= 1 ? 0 : (startIdx - 1) * 2) + (name.count - endIdx - 1)
+                let turnRight = (startIdx) + ((name.count - endIdx - 1) * 2 - 1)
+                leftright = min(leftright, turnLeft, turnRight)
+            }
+            startIdx = endIdx + 1
+        } else {
+            startIdx += 1
+        }
+    }
+    
     return updown + leftright
 }

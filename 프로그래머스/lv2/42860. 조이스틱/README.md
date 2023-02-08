@@ -1,6 +1,6 @@
 # [level 2] 조이스틱 - 42860 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42860?language=swift) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42860) 
 
 ### 성능 요약
 
