@@ -1,20 +1,21 @@
 import Foundation
 
 func solution(_ number: String, _ k: Int) -> String {
-    var result: [Int] = []
-    var count: Int = 0
-
-    Array(number).compactMap { Int(String($0)) }.forEach { item in
-        while count < k {
-            if let last = result.last, last < item {
-                result.removeLast()
-                count += 1
-            } else {
-                break
-            }
+    var numList = number.map{ Int(String($0))! }
+    var result = [numList.removeFirst()]
+    var removeCnt = k
+    
+    for (index,num) in numList.enumerated() {
+        while removeCnt != 0, !result.isEmpty, result.last! < num {
+            result.removeLast()
+            removeCnt -= 1
         }
-        result.append(item)
+        // print("\(index + 1 - (k - removeCnt))...\(number.count - k)")
+        // if index + 1 - (k - removeCnt) == number.count - k {
+        //     break
+        // }
+        result.append(num)
     }
-
-    return result[0..<(result.count - k + count)].map { "\($0)" }.joined()
+    
+    return result.count != number.count - k ? result[0..<number.count - k].map{String($0)}.joined() : result.map{String($0)}.joined()
 }
