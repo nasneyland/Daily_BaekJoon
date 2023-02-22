@@ -2,24 +2,26 @@ import Foundation
 
 func solution(_ n:Int, _ computers:[[Int]]) -> Int {
     
-    var visited = Array(repeating: false, count: n)
+    var connected = Array(repeating: false, count: n)
     var cnt = 0
     
     func bfs(_ index: Int) {
-        visited[index] = true
+        if connected[index] { return }
+        connected[index] = true
         
-        for (i, computer) in computers[index].enumerated() {
-            if !visited[i] && computer == 1 {
+        for (i,c) in computers[index].enumerated() {
+            if c == 1 {
                 bfs(i)
             }
         }
     }
     
-    (0..<n).forEach { index in
-        if !visited[index] {
-            bfs(index)
+    for i in (0..<computers.count) {
+        if !connected[i] {
             cnt += 1
+            bfs(i)
         }
     }
+    
     return cnt
 }
