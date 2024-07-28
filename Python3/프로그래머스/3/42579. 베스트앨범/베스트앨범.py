@@ -10,7 +10,6 @@ def solution(genres, plays):
         genres_count[genres] += plays[idx]
         genres_songs[genres].append((idx, plays[idx]))
     
-    # ✅딕셔너리 키값으로 정렬하는 방법✅
     for genre in sorted(genres_count, key= lambda x: -genres_count[x]):
         # print(genre)
         genres_songs[genre].sort(key= lambda x: (-x[1], x[0]))
