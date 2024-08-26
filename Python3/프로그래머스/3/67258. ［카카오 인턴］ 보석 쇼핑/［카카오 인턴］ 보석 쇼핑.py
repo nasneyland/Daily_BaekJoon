@@ -1,38 +1,31 @@
-import collections
+from collections import defaultdict
 
 def solution(gems):
-    # gems = ["a","a","a","b"]
-    len_gems = len(gems)
-    gem_cnt = len(set(gems))
-    left_idx = 0
-    right_idx = 0
-    gem_collections = collections.defaultdict(int)
-    result = []
+    answer = [0,len(gems)]
+    left,right =0,0 # left: 보석빼기용, right: 보석추가용
+    type_cnt = len(set(gems))
+    gem_dict = defaultdict(int)
     
-    while left_idx != len_gems or right_idx != len_gems:
-        # print(left_idx, right_idx)
-        if len(gem_collections) == gem_cnt:
-            if gem_collections[gems[left_idx]] == 1:
-                gem_collections.pop(gems[left_idx])
+    while 1:
+        if left == len(gems) and right == len(gems):
+            break
+        # 딕셔너리에 보석 종류가 다 들어온 경우
+        if len(gem_dict) == type_cnt:
+            # 최소크기라면
+            if right-left < answer[1]-answer[0]:
+                answer = [left,right]
+            # 최소크기가 아니라면
             else:
-                gem_collections[gems[left_idx]] -= 1
-                
-            left_idx += 1
-            
-            if result:
-                if result[1] - result[0] > right_idx - left_idx:
-                    result = [left_idx, right_idx]
-                elif result[1] - result[0] == right_idx - left_idx:
-                    if result[0] > left_idx:
-                        result = [left_idx, right_idx]
-            else:
-                result = [left_idx, right_idx]
-                
-        elif right_idx == len_gems:
-            left_idx += 1
+                gem_dict[gems[left]] -= 1 # 왼쪽 보석 빼보기
+                if gem_dict[gems[left]] == 0:
+                    del gem_dict[gems[left]] #cnt가 0이라면 딕셔너리에서 빼줘야함
+                left+=1
+
+        elif right == len(gems):
+            left += 1
             
         else:
-            gem_collections[gems[right_idx]] += 1
-            right_idx += 1
-        
-    return result
+            gem_dict[gems[right]] += 1
+            right += 1
+    
+    return [answer[0]+1, answer[1]] # 시작인덱스가 1부터 시작
