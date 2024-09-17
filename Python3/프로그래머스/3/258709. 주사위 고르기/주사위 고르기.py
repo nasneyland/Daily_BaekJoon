@@ -1,6 +1,6 @@
 import itertools
 import collections
-from bisect import bisect_left
+import bisect
 
 def solution(dice):
     len_dice = len(dice)
@@ -27,8 +27,15 @@ def solution(dice):
         b_case_list = [dice[temp] for temp in b_case]
         b_scord_list = [sum(combination) for combination in itertools.product(*b_case_list)]
         # print("b", b_scord_list)
-        b_scord_list.sort()
         
-        dic[sum(bisect_left(b_scord_list,num) for num in a_scord_list)] = a_case
+        cnt = 0
+        b_scord_list.sort()
+        for a in a_scord_list:
+            # b의 리스트에서 a가 어디에 있는지 (비기는 것도 안되므로 bisect_left를 사용하)
+            cnt += bisect.bisect_left(b_scord_list, a)
+        
+        if max_cnt < cnt:
+            max_cnt = cnt
+            result = [a+1 for a in a_case]
                     
-    return [i+1 for i in dic[max(dic)]]
+    return result
