@@ -42,9 +42,9 @@ def solution(arr):
         
         half = size // 2
         backtracking(x, y, half) # 1사분면
-        backtracking(x + half, y, size // 2) # 2사분면
-        backtracking(x, y + half, size // 2) # 3사분면
-        backtracking(x + half, y + half, size // 2) # 4사분면
+        backtracking(x + half, y, half) # 2사분면
+        backtracking(x, y + half, half) # 3사분면
+        backtracking(x + half, y + half, half) # 4사분면
     
     backtracking(0, 0, len(arr))
     return [cnt_0, cnt_1]
