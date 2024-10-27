@@ -1,29 +1,32 @@
 import heapq
+import collections
 
 def solution(jobs):
-    
     cur_time = 0
-    result = []
+    total_wait_time = 0
+    n = len(jobs)
     
-    # 전체 작업 대기행렬
-    ready_heap = []
+    # 대기중인 업무들
+    jobs.sort()  # 시작 시간 기준으로 정렬
+    queue = collections.deque(jobs)
     
-    for job in jobs:
-        heapq.heappush(ready_heap, (job[0], job[1]))
+    # 진행 가능한 업무들
+    heap = []
     
-    working_heap = []    
-    while ready_heap or working_heap:
+    while queue or heap:
         
-        while ready_heap and ready_heap[0][0] <= cur_time:
-            temp_start, temp_cost = heapq.heappop(ready_heap)
-            heapq.heappush(working_heap, (temp_cost, temp_start))
+        # 현재 시간에 추가할 수 있는 모든 작업 힙에 넣기
+        while queue and queue[0][0] <= cur_time:
+            start_time, job_duration = queue.popleft()
+            heapq.heappush(heap, (job_duration, start_time))
+        
+        if heap:
+            job_duration, start_time = heapq.heappop(heap)
             
-        if working_heap and working_heap[0][1] <= cur_time:
-            cur_cost, cur_start = heapq.heappop(working_heap)
-            cur_time += cur_cost
-            
-            result.append(cur_time - cur_start)
+            cur_time += job_duration
+            total_wait_time += cur_time - start_time
         else:
-            cur_time += 1
+            # 대기 중인 작업이 없으면 다음 작업의 시작 시간으로 이동
+            cur_time = queue[0][0]
     
-    return sum(result) // len(result)
+    return total_wait_time // n
